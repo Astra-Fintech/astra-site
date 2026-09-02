@@ -3,49 +3,311 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Astra</title>
+  <meta name="description" content="Astra Tech. Mobilidade elétrica acessível para todos." />
+  <title>Astra Tech</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
   <style>
+    :root {
+      --marinho: #0b1f3b;
+      --anel: #1a5cff;
+      --anel-claro: #7ea6ff;
+      --terminador: #2b5183;
+      --muted: #6e7787;
+      --radius: 15px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html,
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b0b0b;
-      color: white;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: Archivo, system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .shell {
+      --auth-grad:
+        radial-gradient(ellipse 90% 70% at 0% 0%, rgba(26, 92, 255, 0.55), transparent 52%),
+        radial-gradient(ellipse 70% 55% at 100% 100%, rgba(26, 92, 255, 0.28), transparent 48%),
+        linear-gradient(165deg, #061526 0%, #0b1f3b 28%, #123a72 62%, #1a5cff 130%);
+      min-height: 100dvh;
+      background: var(--auth-grad);
+      color: #fff;
+    }
+
+    .frame {
+      min-height: 100dvh;
       display: flex;
-      min-height: 100vh;
-      align-items: center;
+      flex-direction: column;
+    }
+
+    /* Marca mobile / aside desktop — espelha app-brand-lockup escuro + tagline */
+    .marca-mobile,
+    .marca-aside {
+      display: flex;
       justify-content: center;
+      align-items: center;
     }
 
-    main {
-      max-width: 720px;
-      padding: 40px;
+    .marca-mobile {
+      flex: 0 0 auto;
+      width: 100%;
+      padding: calc(1.5rem + env(safe-area-inset-top)) 1.5rem 1.35rem;
+      min-height: 22dvh;
     }
 
-    h1 {
-      font-size: 48px;
-      margin-bottom: 16px;
+    .marca-aside {
+      display: none;
     }
 
-    p {
-      font-size: 20px;
+    .brand-lockup {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: max-content;
+      max-width: 100%;
+      gap: 0.55rem;
+      font-size: clamp(2rem, 6vw, 2.5rem);
+    }
+
+    .brand-lockup__principal {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55em;
+      max-width: 100%;
+    }
+
+    .brand-lockup__simbolo {
+      display: block;
+      flex: 0 0 auto;
+      width: 1em;
+      height: 1em;
+      object-fit: contain;
+    }
+
+    .brand-lockup__wordmark {
+      margin: 0;
+      font-size: 0.62em;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      white-space: nowrap;
+      color: #fbfcfd;
+    }
+
+    .brand-lockup__wordmark-tech {
+      font-weight: 400;
+      color: var(--anel-claro);
+    }
+
+    .brand-lockup__tagline {
+      margin: 0;
+      margin-left: 0;
+      max-width: calc(100% - 0px);
+      font-size: 0.9rem;
+      font-weight: 400;
+      line-height: 1.35;
+      color: rgba(255, 255, 255, 0.84);
+      white-space: normal;
+      text-wrap: balance;
+    }
+
+    .conteudo {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .painel {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      padding: 1.65rem 1.35rem calc(1.75rem + env(safe-area-inset-bottom));
+      background: #ffffff;
+      color: var(--marinho);
+      border-radius: 1.35rem 1.35rem 0 0;
+      box-shadow: 0 -8px 32px rgba(6, 21, 38, 0.18);
+    }
+
+    .painel__centro {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    /* Card de manutenção — auth-card do portal */
+    .card {
+      width: min(100%, 26rem);
+      background: #ffffff;
+      color: var(--marinho);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.75rem 1.35rem;
+      border: 1px solid rgba(11, 31, 59, 0.08);
+      box-shadow: 0 1px 2px rgba(11, 31, 59, 0.04), 0 8px 24px rgba(11, 31, 59, 0.06);
+    }
+
+    .card__titulo {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--marinho);
+    }
+
+    .card__texto {
+      margin: 0.35rem 0 0;
+      font-size: 0.875rem;
       line-height: 1.5;
-      color: #ccc;
+      color: var(--muted);
+      max-width: 34rem;
     }
 
-    a {
-      color: white;
+    @media (min-width: 480px) and (max-width: 959px) {
+      .marca-mobile {
+        min-height: 20dvh;
+        padding-bottom: 1.5rem;
+      }
+
+      .painel {
+        padding-left: clamp(1.75rem, 6vw, 3rem);
+        padding-right: clamp(1.75rem, 6vw, 3rem);
+      }
+    }
+
+    @media (max-width: 959px) {
+      .painel__centro .card {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        background: transparent;
+        flex: 1 1 auto;
+      }
+    }
+
+    @media (min-width: 960px) {
+      .frame {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+        align-items: stretch;
+      }
+
+      .marca-mobile {
+        display: none;
+      }
+
+      .marca-aside {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100dvh;
+        padding: clamp(3rem, 7vw, 5.5rem) clamp(3rem, 8vw, 6.5rem);
+      }
+
+      .marca-aside .brand-lockup {
+        font-size: clamp(2.75rem, 5vw, 3.5rem);
+      }
+
+      .marca-aside .brand-lockup__tagline {
+        font-size: clamp(1.05rem, 1.55vw, 1.25rem);
+        line-height: 1.45;
+        color: rgba(255, 255, 255, 0.88);
+      }
+
+      .conteudo {
+        justify-content: center;
+        align-items: center;
+        min-height: 100dvh;
+      }
+
+      .painel {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 28rem;
+        padding: clamp(2rem, 4vw, 3.5rem);
+        background: transparent;
+        color: inherit;
+        border-radius: 0;
+        box-shadow: none;
+      }
     }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Astra</h1>
-    <p>
-      Tecnologia para operações de crédito e financiamento de mobilidade elétrica.
-    </p>
-    <p>
-      Contato: <a href="mailto:ialvez@astrafin.com.br">ialvez@astrafin.com.br</a>
-    </p>
-  </main>
+  <div class="shell">
+    <div class="frame">
+      <header class="marca-mobile">
+        <div class="brand-lockup" aria-label="Astra Tech">
+          <div class="brand-lockup__principal">
+            <img
+              class="brand-lockup__simbolo"
+              src="assets/branding/astra-33-simbolo-sem-fundo.svg"
+              alt=""
+              width="64"
+              height="64"
+            />
+            <p class="brand-lockup__wordmark" aria-hidden="true">
+              Astra <span class="brand-lockup__wordmark-tech">Tech</span>
+            </p>
+          </div>
+          <p class="brand-lockup__tagline">Mobilidade elétrica acessível para todos</p>
+        </div>
+      </header>
+
+      <aside class="marca-aside" aria-label="Astra Tech">
+        <div class="brand-lockup">
+          <div class="brand-lockup__principal">
+            <img
+              class="brand-lockup__simbolo"
+              src="assets/branding/astra-33-simbolo-sem-fundo.svg"
+              alt=""
+              width="64"
+              height="64"
+            />
+            <p class="brand-lockup__wordmark" aria-hidden="true">
+              Astra <span class="brand-lockup__wordmark-tech">Tech</span>
+            </p>
+          </div>
+          <p class="brand-lockup__tagline">Mobilidade elétrica acessível para todos</p>
+        </div>
+      </aside>
+
+      <div class="conteudo">
+        <main class="painel">
+          <div class="painel__centro">
+            <section class="card" aria-labelledby="manutencao-titulo">
+              <h1 id="manutencao-titulo" class="card__titulo">Estamos em manutenção</h1>
+              <p class="card__texto">
+                Estamos trabalhando para melhorar nossos serviços. Voltamos em breve.
+              </p>
+            </section>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
